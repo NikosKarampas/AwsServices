@@ -2,6 +2,8 @@
 {
     public class QueueSettings
     {
-        public string QueueName { get; set; }
+        public const string Key = "Queue";
+
+        public required string Name { get; set; }
     }
 }

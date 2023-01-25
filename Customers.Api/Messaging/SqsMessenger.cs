@@ -45,7 +45,7 @@ namespace Customers.Api.Messaging
             if (_queueUrl is not null)
                 return _queueUrl;
 
-            var queueUrlResponse = await _sqs.GetQueueUrlAsync(_queueSettings.Value.QueueName);
+            var queueUrlResponse = await _sqs.GetQueueUrlAsync(_queueSettings.Value.Name);
             _queueUrl = queueUrlResponse.QueueUrl;
             return _queueUrl;
         }

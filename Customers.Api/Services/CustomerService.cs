@@ -1,4 +1,5 @@
-﻿using Customers.Api.Domain;
+﻿using Customers.Api.Contracts.Messages;
+using Customers.Api.Domain;
 using Customers.Api.Mapping;
 using Customers.Api.Messaging;
 using Customers.Api.Repositories;
@@ -42,7 +43,7 @@ public class CustomerService : ICustomerService
         var response = await _customerRepository.CreateAsync(customerDto);
         if (response)
         {
-            await _sqsMessenger.SendMessageAsync(customer.ToCustomerCreatedMessage);
+            await _sqsMessenger.SendMessageAsync(customer.ToCustomerCreatedMessage());
         }
 
         return response;
@@ -71,12 +72,27 @@ public class CustomerService : ICustomerService
             throw new ValidationException(message, GenerateValidationError(nameof(customer.GitHubUsername), message));
         }
         
-        return await _customerRepository.UpdateAsync(customerDto);
+        var response = await _customerRepository.UpdateAsync(customerDto);
+        if (response)
+        {
+            await _sqsMessenger.SendMessageAsync(customer.ToCustomerUpdatedMessage());
+        }
+
+        return response;
     }
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        return await _customerRepository.DeleteAsync(id);
+        var response = await _customerRepository.DeleteAsync(id);
+        if (response)
+        {
+            await _sqsMessenger.SendMessageAsync(new CustomerDeleted
+            {
+                Id = id
+            });
+        }
+
+        return response;
     }
 
     private static ValidationFailure[] GenerateValidationError(string paramName, string message)

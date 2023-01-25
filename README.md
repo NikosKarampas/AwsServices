@@ -1,1 +1,1 @@
-# SQS
+# Amazon Web Services Implementation
