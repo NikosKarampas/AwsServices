@@ -14,6 +14,7 @@ namespace Customers.Consumer.Handlers
 
         public Task<Unit> Handle(CustomerCreated request, CancellationToken cancellationToken)
         {
+            //throw new Exception("Something broke"); Dead Letter Queue (DLQ) example
             _logger.LogInformation(request.FullName);
             return Unit.Task;
         }
