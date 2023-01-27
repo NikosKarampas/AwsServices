@@ -26,7 +26,7 @@ var sendMessageRequest = new SendMessageRequest
             "MessageType", new MessageAttributeValue
             {
                 DataType = "String",
-                StringValue = nameof(customerCreated)
+                StringValue = nameof(CustomerCreated)
             }
         }
     }

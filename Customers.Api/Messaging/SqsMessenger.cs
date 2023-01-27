@@ -40,7 +40,7 @@ namespace Customers.Api.Messaging
             return await _sqs.SendMessageAsync(sendMessageRequest);
         }
 
-        private async Task<string> GetQueueUrlAsync()
+        private async ValueTask<string> GetQueueUrlAsync()
         {
             if (_queueUrl is not null)
                 return _queueUrl;
